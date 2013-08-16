@@ -1,0 +1,25 @@
+﻿<div class="container-fluid knockout-samples">
+  <div class="row-fluid">
+      <div class="col-lg-3 well">
+          <ul class="nav">
+              <li class="nav-header">Basic Examples</li>
+
+              <!--ko foreach: introSamples-->
+              <li data-bind="css: { active: isActive }">
+                  <a data-bind="attr: { href: hash }, text: title"></a>
+              </li>
+              <!--/ko-->
+              <li class="nav-header">Detailed Examples</li>
+
+              <!--ko foreach: detailedSamples-->
+              <li data-bind="css: { active: isActive }">
+                  <a data-bind="attr: { href: hash }, text: title"></a>
+              </li>
+              <!--/ko-->
+          </ul>
+      </div>
+      <div class="col-lg-9">
+          <!--ko router: { transition:'entrance', cacheViews:true }--><!--/ko-->
+      </div>
+  </div>
+</div>

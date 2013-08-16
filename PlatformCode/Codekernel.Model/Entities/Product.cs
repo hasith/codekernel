@@ -1,0 +1,28 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+using Codekernel.Data.Core;
+using System.ComponentModel.DataAnnotations; 
+
+namespace Codekernel.Model
+{
+    public class Product : IIdentifier
+    {
+        public int Id { get; set; }
+        public Guid GUID { get; set; }
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public string Category { get; set; }
+
+        // New code 
+        [ForeignKey("Supplier")]
+        public int? SupplierId { get; set; }
+        public virtual Supplier Supplier { get; set; } 
+    }
+}
