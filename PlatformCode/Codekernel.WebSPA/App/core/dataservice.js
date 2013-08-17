@@ -28,6 +28,7 @@
             error: error
         });
     };
+
     var insert = function (entity, dataInJson, success, error) {
         $.ajax({
             url: apiBaseUrl + 'rest/' + entity,
