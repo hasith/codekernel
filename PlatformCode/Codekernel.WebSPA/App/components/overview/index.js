@@ -2,7 +2,7 @@
 
     return {
         activate: function () {
-            notifier.warning("Overview component is activated!");
+            notifier.info("Overview component is activated!");
         }
     }
 });
