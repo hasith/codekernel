@@ -1,5 +1,5 @@
 ﻿define(['breeze'], function (breeze) {
-   
+
     var apiBaseUrl = 'http://localhost:1471/';
 
     breeze.NamingConvention.none.setAsDefault();
@@ -28,11 +28,23 @@
             error: error
         });
     };
+
     var insert = function (entity, dataInJson, success, error) {
         $.ajax({
             url: apiBaseUrl + 'rest/' + entity,
-            data: dataInJson,
+            data: JSON.stringify(dataInJson),
             type: 'POST',
+            contentType: "application/json",
+            success: success,
+            error: error
+        });
+    };
+
+    var update = function (entity, dataInJson, success, error) {
+        $.ajax({
+            url: apiBaseUrl + 'rest/' + entity + "(" + dataInJson.id + ")",
+            data: JSON.stringify(dataInJson),
+            type: 'PUT',
             contentType: "application/json",
             success: success,
             error: error
