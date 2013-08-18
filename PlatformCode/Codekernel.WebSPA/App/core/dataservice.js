@@ -9,19 +9,20 @@
         hasServerMetadata: false
     });
 
-    var action = function (entity, action, id, success, error) {
+    var action = function (entityName, actionName, entityId, data, success, error) {
         $.ajax({
-            url: apiBaseUrl + 'rest/' + entity + "(" + id + ")/" + action,
+            url: apiBaseUrl + 'rest/' + entityName + "(" + entityId + ")/" + actionName,
             type: 'POST',
+            data: JSON.stringify(data),
             contentType: "application/json",
             success: success,
             error: error
         });
     };
 
-    var remove = function (entity, id, success, error) {
+    var remove = function (entityName, entityId, success, error) {
         $.ajax({
-            url: apiBaseUrl + 'rest/' + entity + "(" + id + ")",
+            url: apiBaseUrl + 'rest/' + entityName + "(" + entityId + ")",
             type: 'DELETE',
             contentType: "application/json",
             success: success,
@@ -29,10 +30,10 @@
         });
     };
 
-    var insert = function (entity, dataInJson, success, error) {
+    var insert = function (entityName, data, success, error) {
         $.ajax({
-            url: apiBaseUrl + 'rest/' + entity,
-            data: JSON.stringify(dataInJson),
+            url: apiBaseUrl + 'rest/' + entityName,
+            data: JSON.stringify(data),
             type: 'POST',
             contentType: "application/json",
             success: success,
@@ -40,10 +41,10 @@
         });
     };
 
-    var update = function (entity, dataInJson, success, error) {
+    var update = function (entityName, data, success, error) {
         $.ajax({
-            url: apiBaseUrl + 'rest/' + entity + "(" + dataInJson.id + ")",
-            data: JSON.stringify(dataInJson),
+            url: apiBaseUrl + 'rest/' + entityName + "(" + data.Id + ")",
+            data: JSON.stringify(data),
             type: 'PUT',
             contentType: "application/json",
             success: success,

@@ -1,4 +1,8 @@
-﻿define(['knockout'], function (ko) {
+﻿define(['knockout', 'core/notifier'], function (ko, notifier) {
 
-    return  {} 
+    return {
+        activate: function () {
+            notifier.warning("Overview component is activated!");
+        }
+    }
 });
