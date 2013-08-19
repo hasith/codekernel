@@ -8,7 +8,7 @@ using System.Web.Http.OData;
 
 namespace Codekernel.API.Core
 {
-    public class UowController<T> : EntitySetController<T, int> where T : class, IIdentifier
+    public class UowController<ApiType> : EntitySetController<ApiType, int> where ApiType : class, IIdentifier
     {
         protected IUnitOfWork UnitOfWork { get; set; }
 

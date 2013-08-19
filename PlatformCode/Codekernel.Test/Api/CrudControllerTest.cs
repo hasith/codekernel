@@ -12,6 +12,7 @@ using Codekernel.Model;
 using Codekernel.Data.Core;
 using Codekernel.Test;
 using System.Linq;
+using Codekernel.API.ApiModel;
 
 namespace Codekernel.Test.Api
 {
@@ -48,8 +49,8 @@ namespace Codekernel.Test.Api
         [TestMethod]
         public void TestRestProduct()
         {
-            var obj = new Product() { Name = "test rest product", GUID = Guid.NewGuid(), Category="Hot", Price=234};
-            crudEntity<Product>("Products", obj);
+            var obj = new PublicProduct() { Name = "test rest product", GUID = Guid.NewGuid(), Price=234};
+            crudEntity<PublicProduct>("Products", obj);
         }
 
         [TestMethod]
@@ -78,9 +79,9 @@ namespace Codekernel.Test.Api
 
             //update POST
             Guid newGuid = Guid.NewGuid();
-            entity.GUID = newGuid;
-            entity.Id = inserted.Id;
-            T updated = update(resourceName, entity);
+            retrieved.GUID = newGuid;
+            retrieved.Id = inserted.Id;
+            T updated = update(resourceName, retrieved);
             Assert.AreEqual(newGuid, updated.GUID);
 
             //delete DELETE

@@ -15,31 +15,42 @@ using System.Web.Http.OData;
 namespace Codekernel.API.Core
 {
     [ApiExplorerSettings(IgnoreApi = false)]
-    public class CrudController<T> : UowController<T> where T:class, IIdentifier
+    public abstract class CrudController<DbType, ApiType> : UowController<ApiType>
+        where DbType : class, IIdentifier
+        where ApiType : class, IIdentifier
     {
-        protected IRepository<T> Repository { get; set; }
+        protected IRepository<DbType> Repository { get; set; }
 
         public CrudController()
         {
-            Repository = UnitOfWork.GetEntityRepository<T>();
+            Repository = UnitOfWork.GetEntityRepository<DbType>();
         }
 
-        public override IQueryable<T> Get()
+        protected abstract ApiType ConvertToApiType(DbType dbEntity);
+
+        protected abstract DbType ConvertToDbType(ApiType apiEntity);
+
+        protected abstract IQueryable<ApiType> ConvertToApiQueryable(IQueryable<DbType> dbQueryable);
+
+        public override IQueryable<ApiType> Get()
         {
-            return new RetrieveAll<T>(UnitOfWork).Execute();
+            IQueryable <DbType> dbEntities = new RetrieveAll<DbType>(UnitOfWork).Execute();
+            //return dbEntities.Select(e => new ApiType() { Id });
+            return ConvertToApiQueryable(dbEntities);
         }
 
-        protected override T GetEntityByKey([FromODataUri] int key)
+        protected override ApiType GetEntityByKey([FromODataUri] int key)
         {
-            T entity = new RetrieveById<T>(UnitOfWork).Execute(key);
+           DbType entity = new RetrieveById<DbType>(UnitOfWork).Execute(key);
            if (entity == null)
            {
                throw new HttpResponseException(HttpStatusCode.NotFound);
            }
-           return entity;
+           return ConvertToApiType(entity);
         }
 
-        protected override int GetKey(T entity)
+
+        protected override int GetKey(ApiType entity)
         {
             if (entity == null)
             {
@@ -48,7 +59,7 @@ namespace Codekernel.API.Core
             return entity.Id;
         }
 
-        protected override T CreateEntity(T entity)
+        protected override ApiType CreateEntity(ApiType entity)
         {
             if (entity == null)
             {
@@ -63,9 +74,10 @@ namespace Codekernel.API.Core
 
             try
             {
-                entity = new CreateOrUpdate<T>(UnitOfWork).Execute(entity);
+                DbType dbEntity = ConvertToDbType(entity);
+                dbEntity = new CreateOrUpdate<DbType>(UnitOfWork).Execute(dbEntity);
                 UnitOfWork.Commit();
-                return entity;
+                return ConvertToApiType(dbEntity);
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -80,7 +92,7 @@ namespace Codekernel.API.Core
             }
         }
 
-        protected override T UpdateEntity(int key, T entity)
+        protected override ApiType UpdateEntity(int key, ApiType entity)
         {
             if (key != entity.Id)
             {
@@ -91,9 +103,9 @@ namespace Codekernel.API.Core
 
         }
 
-        protected override T PatchEntity(int key, Delta<T> patchEntity)
+        protected override ApiType PatchEntity(int key, Delta<ApiType> patchEntity)
         {
-            T entity = GetEntityByKey(key);
+            ApiType entity = GetEntityByKey(key);
             if (entity == null)
             {
                 throw new HttpResponseException(HttpStatusCode.NotFound);
@@ -105,7 +117,7 @@ namespace Codekernel.API.Core
 
         public override void Delete([FromODataUri] int key)
         {
-            T entity = GetEntityByKey(key);
+            DbType entity = new RetrieveById<DbType>(UnitOfWork).Execute(key);
 
             if (entity == null)
             {
@@ -118,7 +130,7 @@ namespace Codekernel.API.Core
 
             try
             {
-                new Delete<T>(UnitOfWork).Execute(entity);
+                new Delete<DbType>(UnitOfWork).Execute(entity);
                 UnitOfWork.Commit();
             }
             catch (DbUpdateConcurrencyException ex)

@@ -1,4 +1,5 @@
-﻿using Codekernel.Model;
+﻿using Codekernel.API.ApiModel;
+using Codekernel.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Codekernel.API
 
         public RestApiModelBuilder() 
         {
-            EntitySet<Product>("Products");
+            EntitySet<PublicProduct>("Products");
             EntitySet<Supplier>("Suppliers");
         }
         

@@ -1,4 +1,5 @@
-﻿using Codekernel.API.Core;
+﻿using AutoMapper;
+using Codekernel.API.Core;
 using Codekernel.Model;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Web;
 
 namespace Codekernel.API.Controllers
 {
-    public class SuppliersController : CrudController<Supplier>
+    public class SuppliersController : SimpleCrudController<Supplier>
     {
+
     }
 }

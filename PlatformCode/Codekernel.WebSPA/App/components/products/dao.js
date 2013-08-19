@@ -31,9 +31,9 @@
 
     var save = function (entity, callback) {
 
-        var jsonEntity = ko.toJSON(mapping.toJS(entity));
+        //var jsonEntity = ko.toJSON(mapping.toJS(entity));
 
-        ds.insert("Products", jsonEntity, function (data, status, httpRequest) {
+        ds.insert("Products", mapping.toJS(entity), function (data, status, httpRequest) {
             notifier.success("Product (" + data.Id + ") is successfully saved");
             callback(mapping.fromJS(data));
         },

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,11 @@ namespace Codekernel.Data
         {
             Configuration.ProxyCreationEnabled = true;
             Configuration.LazyLoadingEnabled = true;
+            Database.Log = s => LogDbOperations(s); 
+        }
+
+        private void LogDbOperations(string s) {
+            Debug.Write(s);
         }
 
         public DbSet<Product> Products { get; set; }
