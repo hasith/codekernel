@@ -11,6 +11,20 @@ namespace Codekernel.API.Controllers
 {
     public class ProductsController : CrudController<Product, PublicProduct>
     {
+        /// <summary>
+        /// Navigation property to return custom attributes of a particulat product.
+        /// e.g. GET /rest/Products(4)/Details
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public List<ProductDetail> GetDetails(int key)
+        {
+            return new List<ProductDetail>() {
+                new ProductDetail() { Title = "Product is sole with warantee" },
+                new ProductDetail() { Title = "Limited in stocks" }
+            };
+        }
+
         protected override PublicProduct ConvertToApiType(Product dbEntity)
         {
             return new PublicProduct() { 
@@ -19,7 +33,6 @@ namespace Codekernel.API.Controllers
                 GUID = dbEntity.GUID,
                 Name = dbEntity.Name,
                 Price = dbEntity.Price,
-                Details = new ProductDetails() { SupplierName = (dbEntity.Supplier != null ? dbEntity.Supplier.Name : null) }
             };
         }
 
@@ -43,7 +56,6 @@ namespace Codekernel.API.Controllers
                 GUID = dbEntity.GUID,
                 Price = dbEntity.Price,
                 RowVersion = dbEntity.RowVersion,
-                Details = new ProductDetails() { SupplierName = (dbEntity.Supplier != null ? dbEntity.Supplier.Name : null) }
             });
         }
     }

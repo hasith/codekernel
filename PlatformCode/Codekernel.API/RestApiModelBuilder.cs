@@ -14,6 +14,7 @@ namespace Codekernel.API
         public RestApiModelBuilder() 
         {
             EntitySet<PublicProduct>("Products");
+            EntitySet<ProductDetail>("ProductDetails");
             EntitySet<Supplier>("Suppliers");
         }
         

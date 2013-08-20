@@ -18,10 +18,10 @@ namespace Codekernel.API.ApiModel
 
         public decimal Price { get; set; }
 
-        public ProductDetails Details { get; set; }
+        public List<ProductDetail> Details { get; set; }
     }
 
-    public class ProductDetails {
-        public string SupplierName { get; set; }
+    public class ProductDetail {
+        public string Title { get; set; }
     }
 }
