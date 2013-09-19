@@ -38,13 +38,25 @@ namespace Codekernel.API.Controllers
 
         protected override Product ConvertToDbType(PublicProduct apiEntity)
         {
-            return new Product() { 
-                Id = apiEntity.Id,
-                GUID = apiEntity.GUID,
-                RowVersion = apiEntity.RowVersion,
-                Name = apiEntity.Name,
-                Price = apiEntity.Price
-            };
+            Product product = null;
+            if (apiEntity.Id > 0) 
+            {
+                //existing entity, let take from the database
+                product = Repository.GetById(apiEntity.Id);
+            }
+            else
+            {
+                //new product creation
+                product = new Product();
+            }
+            
+            product.Id = apiEntity.Id;
+            product.GUID = apiEntity.GUID;
+            product.RowVersion = apiEntity.RowVersion;
+            product.Name = apiEntity.Name;
+            product.Price = apiEntity.Price;
+
+            return product;
         }
 
         protected override IQueryable<PublicProduct> ConvertToApiQueryable(IQueryable<Product> dbQueryable)
