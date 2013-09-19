@@ -21,9 +21,11 @@ namespace Codekernel.Test.Data
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
+            //Configure the UowFactory to create a new database and seed sample data
+            UowFactory.Configure(true, true);
             DeleteDbFile();
             //create the unit of work to be tested
-            Uow = (UnitOfWork)UowFactory.Create("DefaultConnection");
+            Uow = (UnitOfWork)UowFactory.CreateUnitOfWork("DefaultConnection");
         }
 
         [ClassCleanup]

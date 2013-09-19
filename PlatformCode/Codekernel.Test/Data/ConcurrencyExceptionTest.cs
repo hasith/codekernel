@@ -16,10 +16,12 @@ namespace Codekernel.Test.Data
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
+            //Configure the UowFactory to create a new database and seed sample data
+            UowFactory.Configure(true, true);
             DeleteDbFile();
 
             //create an instance to be used in test
-            IUnitOfWork Uow = UowFactory.Create("DefaultConnection");
+            IUnitOfWork Uow = UowFactory.CreateUnitOfWork("DefaultConnection");
             var repo = Uow.GetEntityRepository<Product>();
             var item = new Product() { Name = "Pro one", Category = "Best Seller" };
             var inserted = repo.InsertOrUpdate(item);
@@ -33,7 +35,7 @@ namespace Codekernel.Test.Data
         public void TestConcurrency()
         {
             //client 1 tacking a instance and updating
-            UnitOfWork client1Uow = (UnitOfWork)UowFactory.Create("DefaultConnection");
+            UnitOfWork client1Uow = (UnitOfWork)UowFactory.CreateUnitOfWork("DefaultConnection");
             var client1Repo = client1Uow.GetEntityRepository<Product>();
             var client1Product = client1Repo.GetById(EntityId);
             //lets detach before saving to simulate detached client behaviour
@@ -41,7 +43,7 @@ namespace Codekernel.Test.Data
             client1Product.Name = "Client 1 new name";
 
             //client 2 tacking the same instance and updating
-            UnitOfWork client2Uow = (UnitOfWork)UowFactory.Create("DefaultConnection");
+            UnitOfWork client2Uow = (UnitOfWork)UowFactory.CreateUnitOfWork("DefaultConnection");
             var client2Repo = client2Uow.GetEntityRepository<Product>();
             var client2Product = client2Repo.GetById(EntityId);
             client2Uow.Context.ChangeObjectState(client2Product, EntityState.Detached);

@@ -13,13 +13,15 @@ namespace Codekernel.Test
 {
     public class BaseDbIntegrationTest
     {
-        
-        protected static void DeleteDbFile()
+
+        public BaseDbIntegrationTest()
         {
             //set Data Directory for the connection string to use
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Empty));
+        }
 
-            //lets delete any existing database files
+        protected static void DeleteDbFile()
+        {
             var databaseFile = Path.Combine((string)AppDomain.CurrentDomain.GetData("DataDirectory"), "CodekernelDatabase.mdf");
             var databaseLogFile = Path.Combine((string)AppDomain.CurrentDomain.GetData("DataDirectory"), "CodekernelDatabase_log.ldf");
             File.Delete(databaseFile);

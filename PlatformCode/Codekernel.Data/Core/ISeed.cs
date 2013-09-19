@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Codekernel.Data.Seed
+namespace Codekernel.Data.Core
 {
-    class SeedBaseData : ISeed
+    interface ISeed
     {
-        public void Seed(DatabaseContext context)
-        {
-            // do nothing
-        }
+        void Seed(DatabaseContext context);
     }
 }

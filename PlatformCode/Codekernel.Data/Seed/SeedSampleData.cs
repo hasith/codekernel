@@ -1,4 +1,5 @@
-﻿using Codekernel.Model;
+﻿using Codekernel.Data.Core;
+using Codekernel.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Codekernel.Data.Seed
             context.Products.Add(new Product { GUID = Guid.NewGuid(), Name = "Paper Bag", Price = 765 });
             context.Products.Add(new Product { GUID = Guid.NewGuid(), Name = "Sheet Tan", Price = 325 });
             context.SaveChanges();
+
         }
     }
 }

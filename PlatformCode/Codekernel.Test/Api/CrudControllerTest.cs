@@ -13,6 +13,7 @@ using Codekernel.Data.Core;
 using Codekernel.Test;
 using System.Linq;
 using Codekernel.API.ApiModel;
+using Codekernel.Data;
 
 namespace Codekernel.Test.Api
 {
@@ -27,6 +28,8 @@ namespace Codekernel.Test.Api
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
+            //Configure the UowFactory to create a new database and seed sample data
+            UowFactory.Configure(true, true);
             DeleteDbFile();
 
             var configurator = new EndpointConfigurator();

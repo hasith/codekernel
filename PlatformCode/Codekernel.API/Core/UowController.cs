@@ -12,9 +12,14 @@ namespace Codekernel.API.Core
     {
         protected IUnitOfWork UnitOfWork { get; set; }
 
+        static UowController()
+        {
+            UowFactory.Configure(false, true);
+        }
+
         public UowController()
         {
-            UnitOfWork = UowFactory.Create("DefaultConnection");
+            UnitOfWork = UowFactory.CreateUnitOfWork("DefaultConnection");
         }
 
         protected override void Dispose(bool disposing)
